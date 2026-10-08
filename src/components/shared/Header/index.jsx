@@ -26,6 +26,7 @@ const getStoredCartCount = () => {
 export default function Header() {
   const [currentUser, setCurrentUser] = useState(getStoredUser);
   const [cartCount, setCartCount] = useState(getStoredCartCount);
+  const [isNavOpen, setIsNavOpen] = useState(false);
 
   useEffect(() => {
     const handleAuthChange = () => {
@@ -57,148 +58,208 @@ export default function Header() {
     }
   };
 
-  const styles = {
-    active: {
-      color: "#15803d",
-      fontWeight: "700",
-      backgroundColor: "#dcfce7",
-      borderRadius: "20px",
-    },
-    normal: {
-      color: "#475569",
-      fontWeight: "500",
-    },
-  };
+  const navLinkStyle = ({ isActive }) => ({
+    color: isActive ? "#15803d" : "#475569",
+    fontWeight: isActive ? "600" : "500",
+    backgroundColor: isActive ? "#dcfce7" : "transparent",
+    border: isActive ? "1px solid #86efac" : "1px solid transparent",
+    borderRadius: "50px",
+    padding: "8px 16px",
+    transition: "all 0.2s ease-in-out",
+    textDecoration: "none",
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "6px",
+    boxShadow: isActive ? "0 2px 6px rgba(22, 101, 52, 0.12)" : "none",
+  });
 
   return (
-    <header className="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-      <div className="col-md-3 mb-2 mb-md-0">
-        <Link
-          to="/"
-          className="d-inline-flex align-items-center text-decoration-none"
-        >
-          <span
-            className="d-inline-flex align-items-center justify-content-center bg-success-subtle rounded-circle p-2 me-2"
-            style={{ width: "40px", height: "40px" }}
-          >
-            <i className="fa-solid fa-leaf text-success fs-5"></i>
-          </span>
-          <span className="fs-4 fw-bold" style={{ color: "#15803d", letterSpacing: "-0.5px" }}>
-            Bookstore <small className="fs-6 fw-normal text-success">🌿</small>
-          </span>
-        </Link>
-      </div>
-
-      <ul className="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0 gap-1">
-        <li>
-          <NavLink
+    <header className="sticky-top bg-white border-bottom shadow-sm mb-4 py-2">
+      <nav className="navbar navbar-expand-lg navbar-light py-2">
+        <div className="container-fluid px-0">
+          {/* Brand Logo */}
+          <Link
             to="/"
-            end
-            className="nav-link px-3 py-2"
-            style={({ isActive }) =>
-              isActive ? styles.active : styles.normal
-            }
+            className="navbar-brand d-inline-flex align-items-center me-4 text-decoration-none"
           >
-            Home
-          </NavLink>
-        </li>
-
-        <li>
-          <NavLink
-            to="/books"
-            className="nav-link px-3 py-2"
-            style={({ isActive }) =>
-              isActive ? styles.active : styles.normal
-            }
-          >
-            Books
-          </NavLink>
-        </li>
-
-        <li>
-          <NavLink
-            to="/team"
-            className="nav-link px-3 py-2"
-            style={({ isActive }) =>
-              isActive ? styles.active : styles.normal
-            }
-          >
-            Team
-          </NavLink>
-        </li>
-
-        <li>
-          <NavLink
-            to="/contact"
-            className="nav-link px-3 py-2"
-            style={({ isActive }) =>
-              isActive ? styles.active : styles.normal
-            }
-          >
-            Contact
-          </NavLink>
-        </li>
-      </ul>
-
-      {/* Bagian User Login / Tombol Login Register & Keranjang */}
-      <div className="col-md-5 text-end d-flex align-items-center justify-content-end gap-2 flex-wrap">
-        <Link
-          to="/books"
-          className="btn btn-outline-success position-relative me-1 rounded-pill"
-          title="Lihat Keranjang Belanja di Halaman Buku"
-        >
-          <i className="fa-solid fa-cart-shopping"></i>
-          {cartCount > 0 && (
-            <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-              {cartCount}
-            </span>
-          )}
-        </Link>
-
-        {currentUser ? (
-          <div className="d-inline-flex align-items-center justify-content-end flex-wrap gap-2">
-            <div className="d-flex align-items-center text-start bg-light px-2 py-1 rounded-pill border">
-              <img
-                src={currentUser.avatar}
-                alt={currentUser.name}
-                className="rounded-circle me-2 border border-success"
-                style={{ width: "32px", height: "32px", objectFit: "cover" }}
-                onError={(e) => {
-                  e.currentTarget.onerror = null;
-                  e.currentTarget.src =
-                    "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80";
-                }}
-              />
-              <div className="pe-2">
-                <span className="text-muted d-block" style={{ fontSize: "10px" }}>
-                  Selamat Datang,
-                </span>
-                <strong className="text-dark d-inline-block text-truncate" style={{ maxWidth: "120px", fontSize: "13px" }}>
-                  {currentUser.name}
-                </strong>
-              </div>
-            </div>
-
-            <button
-              onClick={handleLogout}
-              className="btn btn-outline-danger btn-sm rounded-pill px-3"
-              title="Keluar dari akun"
+            <span
+              className="d-inline-flex align-items-center justify-content-center rounded-3 me-2 shadow-sm text-white"
+              style={{
+                width: "42px",
+                height: "42px",
+                background: "linear-gradient(135deg, #15803d 0%, #16a34a 100%)",
+              }}
             >
-              <i className="fa-solid fa-right-from-bracket me-1"></i>
-              Logout
-            </button>
+              <i className="fa-solid fa-book-open-reader fs-5"></i>
+            </span>
+            <div className="d-flex flex-column">
+              <span
+                className="fs-4 fw-bold lh-1"
+                style={{ color: "#15803d", letterSpacing: "-0.5px" }}
+              >
+                Bookstore
+              </span>
+              <span className="text-muted" style={{ fontSize: "11px", letterSpacing: "0.5px" }}>
+                Toko Buku Online
+              </span>
+            </div>
+          </Link>
+
+          {/* Mobile Toggler */}
+          <button
+            className="navbar-toggler border-0 shadow-none"
+            type="button"
+            onClick={() => setIsNavOpen(!isNavOpen)}
+            aria-controls="mainNavbar"
+            aria-expanded={isNavOpen}
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+
+          {/* Collapsible Content */}
+          <div
+            className={`collapse navbar-collapse ${isNavOpen ? "show" : ""} justify-content-between`}
+            id="mainNavbar"
+          >
+            {/* Nav Links */}
+            <ul className="navbar-nav mx-auto mb-3 mb-lg-0 gap-1 gap-lg-2 py-2 py-lg-0">
+              <li className="nav-item">
+                <NavLink
+                  to="/"
+                  end
+                  style={navLinkStyle}
+                  className="nav-link"
+                  onClick={() => setIsNavOpen(false)}
+                >
+                  <i className="fa-solid fa-house-chimney"></i>
+                  <span>Home</span>
+                </NavLink>
+              </li>
+
+              <li className="nav-item">
+                <NavLink
+                  to="/books"
+                  style={navLinkStyle}
+                  className="nav-link"
+                  onClick={() => setIsNavOpen(false)}
+                >
+                  <i className="fa-solid fa-book"></i>
+                  <span>Books</span>
+                </NavLink>
+              </li>
+
+              <li className="nav-item">
+                <NavLink
+                  to="/team"
+                  style={navLinkStyle}
+                  className="nav-link"
+                  onClick={() => setIsNavOpen(false)}
+                >
+                  <i className="fa-solid fa-users"></i>
+                  <span>Team</span>
+                </NavLink>
+              </li>
+
+              <li className="nav-item">
+                <NavLink
+                  to="/contact"
+                  style={navLinkStyle}
+                  className="nav-link"
+                  onClick={() => setIsNavOpen(false)}
+                >
+                  <i className="fa-solid fa-envelope-open-text"></i>
+                  <span>Contact</span>
+                </NavLink>
+              </li>
+            </ul>
+
+            {/* User Login & Cart Action Area */}
+            <div className="d-flex align-items-center gap-2 flex-wrap">
+              {/* Cart Button */}
+              <Link
+                to="/books"
+                className="btn btn-outline-success position-relative rounded-pill px-3 py-2 d-inline-flex align-items-center gap-2"
+                title="Lihat Keranjang Belanja di Halaman Buku"
+                onClick={() => setIsNavOpen(false)}
+              >
+                <i className="fa-solid fa-cart-shopping"></i>
+                <span className="d-none d-sm-inline small fw-semibold">Keranjang</span>
+                {cartCount > 0 && (
+                  <span className="badge rounded-pill bg-danger ms-1">
+                    {cartCount}
+                  </span>
+                )}
+              </Link>
+
+              {/* User Profile or Login/Register */}
+              {currentUser ? (
+                <div className="d-inline-flex align-items-center gap-2">
+                  <div className="d-flex align-items-center bg-light px-2 py-1 rounded-pill border">
+                    <img
+                      src={currentUser.avatar}
+                      alt={currentUser.name}
+                      className="rounded-circle me-2 border border-success"
+                      style={{
+                        width: "32px",
+                        height: "32px",
+                        objectFit: "cover",
+                      }}
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src =
+                          "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80";
+                      }}
+                    />
+                    <div className="pe-2 text-start">
+                      <span
+                        className="text-muted d-block"
+                        style={{ fontSize: "10px", lineHeight: "1" }}
+                      >
+                        Halo,
+                      </span>
+                      <strong
+                        className="text-dark d-inline-block text-truncate"
+                        style={{ maxWidth: "100px", fontSize: "12px" }}
+                      >
+                        {currentUser.name}
+                      </strong>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={handleLogout}
+                    className="btn btn-outline-danger btn-sm rounded-pill px-3 py-2 fw-semibold"
+                    title="Keluar dari akun"
+                  >
+                    <i className="fa-solid fa-right-from-bracket me-1"></i>
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <div className="d-inline-flex align-items-center gap-2">
+                  <Link
+                    to="/login"
+                    className="btn btn-outline-success rounded-pill px-3 py-2 fw-semibold"
+                    onClick={() => setIsNavOpen(false)}
+                  >
+                    <i className="fa-solid fa-arrow-right-to-bracket me-1"></i>
+                    Login
+                  </Link>
+                  <Link
+                    to="/register"
+                    className="btn btn-success rounded-pill px-3 py-2 fw-semibold shadow-sm"
+                    onClick={() => setIsNavOpen(false)}
+                  >
+                    <i className="fa-solid fa-user-plus me-1"></i>
+                    Register
+                  </Link>
+                </div>
+              )}
+            </div>
           </div>
-        ) : (
-          <>
-            <Link to="/login" className="btn btn-outline-success rounded-pill px-3 me-1">
-              Login
-            </Link>
-            <Link to="/register" className="btn btn-success rounded-pill px-3">
-              Register
-            </Link>
-          </>
-        )}
-      </div>
+        </div>
+      </nav>
     </header>
   );
 }
