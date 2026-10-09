@@ -7,12 +7,12 @@ const FALLBACK_IMAGE =
 
 const CATEGORIES = [
   "Semua",
-  "Fiksi",
-  "Pengembangan Diri",
-  "Teknologi",
-  "Misteri",
-  "Inspirasi",
-  "Sastra & Budaya",
+  "Web Dev",
+  "Software Engineering",
+  "Mobile & Framework",
+  "Algoritma & Data",
+  "AI & Machine Learning",
+  "DevOps & Security",
 ];
 
 const getStoredCart = () => {
@@ -59,7 +59,8 @@ export default function ProductList({
   const [newBookForm, setNewBookForm] = useState({
     title: "",
     author: "",
-    category: "Fiksi",
+    year: new Date().getFullYear(),
+    category: "Web Dev",
     price: "",
     originalPrice: "",
     description: "",
@@ -232,6 +233,7 @@ export default function ProductList({
       id: Date.now(),
       title: newBookForm.title.trim(),
       author: newBookForm.author.trim() || "Penulis Bookstore",
+      year: parseInt(newBookForm.year, 10) || new Date().getFullYear(),
       category: newBookForm.category || "Fiksi",
       tag: newBookForm.tag || "Buku Baru ✨",
       rating: 5.0,
@@ -249,6 +251,7 @@ export default function ProductList({
     setNewBookForm({
       title: "",
       author: "",
+      year: new Date().getFullYear(),
       category: "Fiksi",
       price: "",
       originalPrice: "",
@@ -262,21 +265,22 @@ export default function ProductList({
   const handleQuickAddBook = () => {
     const newBook = {
       id: Date.now(),
-      title: "The Let Them Theory",
-      author: "Mel Robbins",
-      category: "Pengembangan Diri",
+      title: "Learning TypeScript & Node.js",
+      author: "Kevin Sanjaya",
+      year: 2024,
+      category: "Web Dev",
       tag: "Bestseller 🔥",
       rating: 4.9,
       reviews: 310,
-      originalPrice: "Rp125.000",
-      price: "Rp100.000",
+      originalPrice: "Rp145.000",
+      price: "Rp115.000",
       image:
-        "https://image.gramedia.net/rs:fit:0:0/plain/https://cdn.gramedia.com/uploads/product-metas/t0-eee-l7x.jpg",
-      description: "Cerita inspiratif dan strategi psikologis untuk meraih mimpi dan kedamaian.",
+        "https://images.unsplash.com/photo-1516259762381-22954d7d3ad2?auto=format&fit=crop&w=500&q=80",
+      description: "Panduan praktis pembuatan REST API scalable menggunakan TypeScript, Node.js, dan Express.",
     };
 
     setBooks((prevBooks) => [newBook, ...prevBooks]);
-    setAlertMessage('Buku "The Let Them Theory" berhasil ditambahkan ke katalog!');
+    setAlertMessage('Buku "Learning TypeScript & Node.js" berhasil ditambahkan ke katalog!');
     setIsAddModalOpen(false);
   };
 
@@ -402,7 +406,7 @@ export default function ProductList({
               {/* Body Rincian */}
               <div className={styles.body}>
                 <div className={styles.author}>
-                  {book.author || "Bookstore Edition"}
+                  {book.author || "Bookstore Edition"}{book.year ? ` • ${book.year}` : ""}
                 </div>
                 <h5
                   className={styles.title}
@@ -928,7 +932,7 @@ export default function ProductList({
                     onClick={handleQuickAddBook}
                     className="btn btn-sm btn-outline-info"
                   >
-                    + Isi Cepat (The Let Them Theory)
+                    + Isi Cepat (Learning TypeScript)
                   </button>
                 </div>
 
@@ -937,7 +941,7 @@ export default function ProductList({
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="Contoh: Seni Berpikir Positif"
+                    placeholder="Contoh: Arsitektur Microservices"
                     value={newBookForm.title}
                     onChange={(e) =>
                       setNewBookForm({ ...newBookForm, title: e.target.value })
@@ -947,7 +951,7 @@ export default function ProductList({
                 </div>
 
                 <div className="row g-2 mb-3">
-                  <div className="col-md-6">
+                  <div className="col-md-4">
                     <label className="form-label fw-bold">Penulis</label>
                     <input
                       type="text"
@@ -962,7 +966,22 @@ export default function ProductList({
                       }
                     />
                   </div>
-                  <div className="col-md-6">
+                  <div className="col-md-4">
+                    <label className="form-label fw-bold">Tahun Terbit</label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      placeholder="2024"
+                      value={newBookForm.year}
+                      onChange={(e) =>
+                        setNewBookForm({
+                          ...newBookForm,
+                          year: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                  <div className="col-md-4">
                     <label className="form-label fw-bold">Kategori</label>
                     <select
                       className="form-select"
