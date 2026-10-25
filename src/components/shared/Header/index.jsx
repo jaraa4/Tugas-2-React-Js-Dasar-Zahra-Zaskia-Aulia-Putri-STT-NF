@@ -172,6 +172,30 @@ export default function Header() {
                   <span>Contact</span>
                 </NavLink>
               </li>
+
+              <li className="nav-item">
+                <NavLink
+                  to="/genre"
+                  style={navLinkStyle}
+                  className="nav-link"
+                  onClick={() => setIsNavOpen(false)}
+                >
+                  <i className="fa-solid fa-layer-group"></i>
+                  <span>Genre</span>
+                </NavLink>
+              </li>
+
+              <li className="nav-item">
+                <NavLink
+                  to="/author"
+                  style={navLinkStyle}
+                  className="nav-link"
+                  onClick={() => setIsNavOpen(false)}
+                >
+                  <i className="fa-solid fa-feather-pointed"></i>
+                  <span>Author</span>
+                </NavLink>
+              </li>
             </ul>
 
             {/* User Login & Cart Action Area */}

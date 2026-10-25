@@ -7,6 +7,8 @@ import Contact from "./pages/contact";
 import Login from "./pages/auth/login";
 import Register from "./pages/auth/register";
 import NotFound from "./pages/NotFound";
+import GenrePage from "./pages/genre";
+import AuthorPage from "./pages/author";
 
 function App() {
   return (
@@ -22,6 +24,13 @@ function App() {
           <Route path="books" element={<Books />} />
           <Route path="team" element={<Team />} />
           <Route path="contact" element={<Contact />} />
+
+          {/* ================================================
+              MVC ROUTES — Genre & Author
+              Routing mengarahkan URL ke controller yang tepat
+              ================================================ */}
+          <Route path="genre" element={<GenrePage />} />
+          <Route path="author" element={<AuthorPage />} />
         </Route>
 
         {/* ========================================================
